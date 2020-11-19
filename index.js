@@ -100,10 +100,18 @@ function removeUser(socketid){
 	userList.colors.splice(index,1);
 }
 
-function updateUserList(list, prevName, newName){
-	for(let i = 0; i < list.length; i++){
-		if(list[i] === prevName){
-			list[i] = newName;
+function updateOnlineUserList(prevName, newName){
+	for(let i = 0; i < onlineUsers.length; i++){
+		if(onlineUsers[i] === prevName){
+			onlineUsers[i] = newName;
+		}
+	}
+}
+
+function updateUserList(prevName, newName){
+	for(let i = 0; i < userList.usernames.length; i++){
+		if(userList.usernames[i] === prevName){
+			userList.usernames[i] = newName;
 		}
 	}
 }
@@ -168,9 +176,11 @@ function executeCommand(type, data, socket){
 			if(uniqueUsername(data)){
 				let index = sockets.indexOf(socket.id);
 				let prevname = userList.usernames[index];
-				updateUserList(userList.usernames, prevname, data);
-				updateUserList(onlineUsers, prevname, data);
+				updateOnlineUserList(prevname, data);
+				updateUserList(prevname, data);
 				updateHistoryName(prevname, data);
+				console.log(onlineUsers);
+				console.log(userList.usernames);
 				for(let i = 0; i < sockets.length; i++){
 					let socket = io.sockets.connected[sockets[i]];
 					sendChatHistory(socket);
@@ -233,7 +243,7 @@ io.on('connection', (socket) => {
 		} 
 
 		sockets.push(socket.id);
-		userList.usernames.push(username.toLowerCase());
+		userList.usernames.push(username);
 		userList.tokens.push(token);
 		userList.colors.push(color);
 		socket.emit('update users', onlineUsers);
