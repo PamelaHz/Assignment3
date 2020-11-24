@@ -282,6 +282,6 @@ io.on('connection', (socket) => {
 
 });
 
-http.listen(5432, () =>{
-	console.log('listening on *:5435');
+http.listen(process.env.PORT || 5432, () =>{
+	console.log('listening on *:5432');
 });
