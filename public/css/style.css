@@ -167,7 +167,7 @@ html {
 }
 
 .container p{
-	color: white;
+	color: blue;
 	font-size: min(max(3vw, 19px),16px);
 	width: 85%;
 }
